@@ -1,0 +1,124 @@
+%% Written by Iftikhar Ali %%
+
+\documentclass[border=0.125cm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes,shadows,arrows}
+\usetikzlibrary{positioning}
+
+
+\tikzset{%
+	do path picture/.style={%
+		path picture={%
+			\pgfpointdiff{\pgfpointanchor{path picture bounding box}{south west}}%
+			{\pgfpointanchor{path picture bounding box}{north east}}%
+			\pgfgetlastxy\x\y%
+			\tikzset{x=\x/2,y=\y/2}%
+			#1
+		}
+	},
+	sin wave/.style={do path picture={    
+			\draw [line cap=round] (-3/4,0)
+			sin (-3/8,1/2) cos (0,0) sin (3/8,-1/2) cos (3/4,0);
+	}},
+	cross/.style={do path picture={    
+			\draw [line cap=round] (-1,-1) -- (1,1) (-1,1) -- (1,-1);
+	}},
+	plus/.style={do path picture={    
+			\draw [line cap=round] (-3/4,0) -- (3/4,0) (0,-3/4) -- (0,3/4);
+	}}
+}
+
+
+\begin{document}
+
+	\tikzstyle{blockA} = [rectangle, color = blue, draw, fill=blue!10,   
+text width=0.34em, text centered, rounded corners, minimum height=0.4em] 
+
+	\tikzstyle{blockB} = [rectangle, color = blue, draw, fill=blue!10,   
+text width=1.4em, text centered, rounded corners, minimum height=0.4em] 
+
+\tikzstyle{block1} = [draw, rectangle, rounded corners,fill=blue!15, text width=1.2em,
+text centered, minimum height=70mm, node distance=10em]
+
+\tikzstyle{block2} = [draw, rectangle, fill=red!10,  text width=12em,
+text centered, minimum height=20mm, node distance=10em]
+
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+
+\tikzstyle{hdots} = [draw=none,  scale=4, text height=0.333cm,
+execute at begin node=\color{black}$\hdots$ ]
+
+\tikzset{%
+  every neuron/.style={
+    circle,
+    draw, %    fill=blue!30,
+    minimum size=0.5cm
+  },
+  neuron missing/.style={
+    draw=none, %        fill=blue!10,
+    scale=4,
+    text height=0.333cm,
+    execute at begin node=\color{black}$\vdots$
+  },
+}
+
+\begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
+
+\node [block2, xshift=0.0em , yshift=-2.0em] (hidden) { };
+
+
+% \tiny \scriptsize \footnotesize \small \normalsize \large \Large \LARGE \huge \Huge
+
+\draw [->] (-0.96, -1.25) -- (-0.96, -0.92) node at (-0.96, -1.36) {$x_{t}$}; 
+\draw [->] (-0.96, -1) -- (-0.96, -0.22);
+
+
+\draw [<-] (-0.97,-1.02) -- (-1.6,-1.02) node [above, left] {$h_{t-1}$};
+\draw (-0.97,-1.02) -- (0.45, -1.02);
+\draw [->] (-0.49, -1.021) -- (-0.49, -0.92); 
+\draw [->] (-0.49, -0.7) -- (-0.49, -0.48) -- (-0.1, -0.48); 
+
+
+
+\draw [->] (0.0, -1.021) -- (0.0, -0.92);  %tanh
+\draw [->] (0.45, -1.021) -- (0.45, -0.92); 
+\draw [->] (0.45, -0.7) -- (0.45, -0.48) -- (1.0, -0.48); 
+
+\draw [->] (0.0, -0.7) -- (0, -0.55);  %tanh
+\draw [->] (0.0, -0.4) -- (0, -0.22);  %tanh
+
+
+
+\draw [<-] (-1.07,-0.1) -- (-1.6,-0.1) node [above, left] {$C_{t-1}$};
+\draw [->] (-0.9,-0.1) -- (-0.1,-0.1);
+\draw [->] (0.1,-0.1) -- (0.71,-0.1);
+
+
+\draw [->] (1.1,-0.35) -- (1.1,-0.22); 
+\draw [->] (1.1,-0.8) -- (1.1,-0.4); 
+\draw [->] (1.1,-0.8) -- (1.6,-0.8) node [above, right] {$h_{t}$};
+
+\node [blockB, xshift=4.1em , yshift=-0.350em ](P3) {\scriptsize $\tanh$};  
+\draw [->] (1.2,-0.1) -- (1.6,-0.1) node [above, right] {$C_{t}$};
+
+\draw [->] (1.3,-0.07) -- (1.3,0.3) node [above, above] {$h_{t}$};
+\draw [-] (1.3,-0.8) -- (1.3,-0.13);
+
+\node [blockA, xshift=-4.1em , yshift=-3.350em ](P1) {$\sigma$};  
+
+
+\node [blockA, xshift=-2.1em , yshift=-3.350em ](P2) {$\sigma$};  
+\node [blockB, xshift=-0.1em , yshift=-3.350em ](P3) {\scriptsize $\tanh$};  
+\node [blockA, xshift=1.9em , yshift=-3.350em ](P4) {$\sigma$};  
+
+
+
+\node [circle, draw, cross, color = blue, fill=blue!10]    at (-0.96,-0.12) {};
+\node [circle, draw, cross, color = blue, fill=blue!10]    at (1.1,-0.45) {};
+\node [circle, draw, plus, color = blue, fill=blue!10]    at (0,-0.12) {};
+\node [circle, draw, plus, color = blue, fill=blue!10]    at (0,-0.45) {};
+
+\node [color = brown!50] at (0,0.4){LSTM-RNN};
+\end{tikzpicture}
+\end{document} 
